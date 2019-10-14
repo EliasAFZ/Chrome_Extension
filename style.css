@@ -1,0 +1,34 @@
+/*
+Name: Chrome Extension inspired by the Momentum plugin.
+Date: 10/14/2019
+Description:
+
+@Author Elias Afzalzada
+Copyright © Elias Afzalzada - All Rights Reserved
+*/
+
+html, body {
+    height: 100%;
+}
+
+body {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 50%;
+    margin: 0;
+    font-family: sans-serif;
+}
+
+.overlay {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    color: #fff;
+    font-size: 100px;
+}
