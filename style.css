@@ -26,9 +26,57 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    color: #ffffff;
+    flex-direction: column;
 }
 
-h1 {
-    color: #fff;
-    font-size: 100px;
+.top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    font-size: 25px;
+    display: flex;
+    padding: 20px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.top .left {
+    flex: 1 1 auto;
+    text-align: left;
+}
+
+.top .right {
+    flex: 1 1 auto;
+    text-align: right;
+}
+
+.time {
+    font-size: 200px;
+    margin: 0;
+    font-weight: 400;
+}
+
+.greeting {
+    font-size: 80px;
+    font-weight: 400;
+    margin: 0;
+}
+
+input.user-name{
+    width: 20em;
+    text-align: center;
+    background: 0;
+    border: 0;
+    border-bottom: 2px solid #ffffff;
+    outline: 0;
+    font-size: 30px;
+    color: #ffffff;
+    margin-top: 20px;
+
+}
+
+a.photoby {
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
 }

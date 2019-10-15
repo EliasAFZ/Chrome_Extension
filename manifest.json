@@ -2,7 +2,8 @@
   "name": "ChromeExtension",
   "version": "0.1",
   "chrome_url_overrides": {
-    "new_tab": "index.html"
+    "newtab": "index.html"
   },
-  "manifest_version": 2
+  "manifest_version": 2,
+  "content_security_policy": "script-src 'self' https://code.jquery.com; object-src 'self'"
 }

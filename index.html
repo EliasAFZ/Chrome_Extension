@@ -8,15 +8,43 @@ Copyright © Elias Afzalzada - All Rights Reserved
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
     <head>
         <meta charset="UTF-8">
         <title>Inspired</title>
         <link rel="stylesheet" href="style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="script.js"></script>
     </head>
+
     <body style="background-image:url(https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1952&q=80)">
         <div class="overlay">
-            <h1>Hello, Elias</h1>
+
+            <div class="top">
+
+                <div class="left">
+                    <div>
+                        Interest: <span class="interest-text"></span>
+                    </div>
+
+                    <div>
+                        Photo by: <a class="photoby" href="#" target="_blank"></a>
+                    </div>
+                </div>
+
+                <div class="right">
+                    <div class="date">October, 14, 2019</div>
+                </div>
+
+            </div>
+
+            <h1 class="time"></h1>
+            <h2 class="greeting"></h2>
+
+            <input class="user-name" type="text">
+        <!--<input class="interest" type="text">-->
+
         </div>
     </body>
 </html>
