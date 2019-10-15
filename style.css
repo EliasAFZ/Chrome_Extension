@@ -63,7 +63,7 @@ body {
     margin: 0;
 }
 
-input.user-name{
+input.user-name {
     width: 20em;
     text-align: center;
     background: 0;
@@ -73,7 +73,6 @@ input.user-name{
     font-size: 30px;
     color: #ffffff;
     margin-top: 20px;
-
 }
 
 a.photoby {

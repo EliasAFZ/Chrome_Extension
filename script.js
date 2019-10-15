@@ -45,13 +45,16 @@ $(document).ready(function(){
 
 function setCurrentTime(){
     var now = new Date();
-    $('.time').html(now.getHours()+":"+now.getMinutes())
+    // 24 hour to 12 hour conversion
+    var hours = (now.getHours() % 12) || 12;
+    var minutes = (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+    $('.time').html(hours+":"+minutes)
     $('.date').html(now.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }));
 }
 function setCookie(cname,cvalue,exdays) {
     var d = new Date();
     d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    var expires = "expires=" + d.toGMTString();
+    var expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 function getCookie(cname) {
