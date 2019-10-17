@@ -21,11 +21,11 @@ $(document).ready(function(){
     if(username){
         $('.greeting').css('display','inline-block');
         $('.user-name').css('display','none');
-        $('.greeting').html(`Hello <span class="stored-name">${username}</span>.`);
+        $('.greeting').html(`Hey again, <span class="stored-name">${username}</span>.`);
     }else{
-        $('.greeting').css('display','none');
+        $('.greeting').css('display');
         $('.user-name').css('display','inline-block');
-        $('.greeting').html(`What's your name?`);
+        $('.greeting').html(`Hi there, what's your name?`);
     }
 
     $('.user-name').keypress(function(e) {
@@ -33,7 +33,7 @@ $(document).ready(function(){
             var username = e.target.value;
             if(!username) return;
             $('.user-name').fadeOut(function(){
-                $('.greeting').html(`Hello ${username}.`);
+                $('.greeting').html(`Hello there, ${username}!`);
                 $('.greeting').fadeIn(function(){
                     setCookie('username', username,365);
                 });
