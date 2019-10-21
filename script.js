@@ -16,6 +16,7 @@ $(document).ready(function(){
         setCurrentTime();
     },10*1000);
 
+    // var is in scope of the function
     var username = getCookie('username');
     //check cookie
     if(username){
@@ -44,25 +45,26 @@ $(document).ready(function(){
 });
 
 function setCurrentTime(){
-    var now = new Date();
+    // let is in scope of the brackets
+    let now = new Date();
     // 24 hour to 12 hour conversion
-    var hours = (now.getHours() % 12) || 12;
-    var minutes = (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+    let hours = (now.getHours() % 12) || 12;
+    let minutes = (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
     $('.time').html(hours+":"+minutes)
     $('.date').html(now.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }));
 }
 function setCookie(cname,cvalue,exdays) {
-    var d = new Date();
+    let d = new Date();
     d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    var expires = "expires=" + d.toUTCString();
+    let expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for(var i = 0; i < ca.length; i++) {
-        var c = ca[i];
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i < ca.length; i++) {
+        let c = ca[i];
         while (c.charAt(0) == ' ') {
             c = c.substring(1);
         }
