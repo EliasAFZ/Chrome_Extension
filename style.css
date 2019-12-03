@@ -41,6 +41,11 @@ body {
     color: rgba(255, 255, 255, 0.5);
 }
 
+.bottom {
+    position: absolute;
+    bottom: 0px;
+}
+
 .top .left {
     flex: 1 1 auto;
     text-align: left;
@@ -52,16 +57,24 @@ body {
 }
 
 .time {
-    font-size: 200px;
+    font-size: 180px;
     margin: 0;
     font-weight: 400;
 }
 
 .greeting {
-    font-size: 80px;
+    font-size: 60px;
     font-weight: 400;
     margin: 0;
 }
+
+.mantra {
+    font-size: 30px;
+    font-weight: 300;
+    margin: 10px;
+    color: #ffffff;
+}
+
 
 input.user-name {
     width: 20em;
@@ -75,7 +88,7 @@ input.user-name {
     margin-top: 20px;
 }
 
-a.photoby {
+a.photoLink {
     color: rgba(255, 255, 255, 0.5);
     text-decoration: none;
 }
