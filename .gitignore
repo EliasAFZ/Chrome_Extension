@@ -1,2 +1,7 @@
 /Chrome Extension.iml
 /.idea/
+/config.env
+/package-lock.json
+/node_modules/
+/.env
+/config.js

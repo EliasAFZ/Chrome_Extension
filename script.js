@@ -1,4 +1,3 @@
-
 /*
 Name: Chrome Extension inspired by the Momentum plugin.
 Date: 10/14/2019
@@ -8,113 +7,176 @@ Description:
 Copyright © Elias Afzalzada - All Rights Reserved
 */
 
-let greeting = $('.greeting');
-let user_name = $('.user-name');
-let mantra = $('.mantra');
-let time = $('.time');
-let date = $('.date');
 
+$(document).ready(function () {
+    let username = getCookie('username');
 
-$(document).ready(function(){
-    //current time
-    //update every 10 seconds;
-    setCurrentTime();
-    setBackground();
-    setInterval(function(){
-        setCurrentTime();
-    },10*1000);
-
-    // var is in scope of the function
-    var username = getCookie('username');
     //check cookie
-    if(username){
-        $('.greeting').css('display','inline-block');
-        $('.user-name').css('display','none');
-        $('.greeting').html(`Hey again, <span class="stored-name">${username}</span>.`)
-        setQuote();
-    }else{
-        $('.greeting').css('display');
-        $('.user-name').css('display','inline-block');
-        $('.greeting').html(`Hi there, what's your name?`);
+    if (username) {
+        setTimeElement();
+        returningUser();
+    } else {
+        getBackgroundImage();
+        setTimeElement();
+        fadeInWelcomeElements();
     }
 
-    $('.user-name').keypress(function (e) {
+    // Listen for user enter keypress and set cookie/quote
+    $('.user_name').keypress(function (e) {
         if (e.which == 13) {
-            var username = e.target.value;
+            let username = e.target.value;
             if (!username) return;
-            $('.user-name').fadeOut(function () {
-                $('.greeting').html(`Hello there, ${username}!`);
-                $('.greeting').fadeIn(function () {
-                    setQuote();
-                    setCookie('username', username, 365);
-                });
-            });
+            fadeInUserElements(username);
+            setQuote();
+            //TODO: set later expire time
+            setCookie('username', username, 0);
         }
     });
 });
 
+function returningUser() {
+    let photo_url = getCookie("photo_url");
+    let photo_author_url = getCookie("photo_author_url");
+    let photo_author = getCookie("photo_author");
+    let quote = getCookie("quote");
 
-function setQuote(){
-    let quotesArr = [
-        "Knowing is not enough, we must apply. Willing is not enough, we must do.",
-        "Be an encourager, the world has enough critics already.",
-        "The past has no power over the present moment.",
-        "We are what we repeatedly do. Excellence then, is not an act, but a habit.",
-        "Nothing is particularly hard if you divide it into small jobs.",
-        "You can't climb the ladder of success with your hands in your pockets.",
-        "Make the most of the best and the least of the worst.",
-        "People are smarter than you think. Give them a chance to prove themselves.",
-        "You are awesome.",
-        "Life is a succession of lessons which must be lived to be understood."
-    ];
+    if (!photo_url || !photo_author || !photo_author_url) {
+        getBackgroundImage();
+    } else {
+        $('.photoLink').html("Photo by: " + photo_author);
+        $('.photoLink').attr('href', photo_author_url);
+        $('body').css('background-image', `url(${photo_url})`);
+        $('.quote').css('display', 'inline-block');
+        $('.quote').html(quote);
 
-    let randomQuote = quotesArr[Math.floor(Math.random() * quotesArr.length)];
-
-
-    $('.mantra').css('display', 'inline-block');
-    $('.mantra').html(randomQuote);
+        $('.greeting').css('display', 'inline-block');
+        $('.user_name').css('display', 'none');
+        $('.greeting').html(`Hello there, <span class="stored-name">username</span>.`);
+    }
 }
 
-function setBackground(){
-    let backgroundsArr = [
-        "https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1952&q=80",
-        "https://images.unsplash.com/photo-1564610142447-883026a1a857?ixlib=rb-1.2.1&auto=format&fit=crop&w=2002&q=80"
-    ];
+function fadeInWelcomeElements() {
+    let fadeInTime = 2000;
 
-    let background = backgroundsArr[Math.floor(Math.random() * backgroundsArr.length)];
+    setTimeElement();
+    $('.greeting').html(`Hi there, what's your name?`);
 
-    $('.photoLink').attr('href', background);
-    $('html').css({'background-image': 'url(' + background + ')'});
+    $(function () {
+        $(".time").hide().fadeIn(fadeInTime);
+        $(".greeting").hide().fadeIn(fadeInTime);
+        $(".user_name").hide().fadeIn(fadeInTime);
+        $(".top .left ").hide().fadeIn(fadeInTime);
+        $(".top .right").hide().fadeIn(fadeInTime);
+    });
 }
 
-function setCurrentTime(){
+
+function fadeInUserElements(username) {
+    let fadeInTime = 1000;
+    let fadeOutTime = 500;
+
+    $(function () {
+        $('.greeting').fadeOut(fadeOutTime);
+
+        // to prevent user from seeing updated text before its done fading out
+        window.setTimeout(function () {
+            $('.greeting').html("Enjoy the plugin, " + username + "!");
+        }, fadeOutTime);
+
+        $('.greeting').fadeIn(fadeInTime);
+        $('.user_name').fadeOut(fadeOutTime);
+        $('.quote').fadeIn(fadeInTime * 3);
+    });
+}
+
+
+function setTimeElement() {
+    //current time
+    setCurrentTime();
+    setInterval(function () {
+        setCurrentTime();
+        //update every 10 seconds;
+    }, 10 * 1000);
+}
+
+function setQuote() {
+    // proxy to get around cors bug?
+    let proxy = 'https://cors-anywhere.herokuapp.com/';
+    let url = proxy + 'https://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json';
+    $.get(url, function (dataJson) {
+        let quote = dataJson.quoteText;
+        let quote_author = dataJson.quoteAuthor;
+
+        $('.quote').html("\"" + quote + "\"" + " - " + quote_author);
+
+        setCookie("quote", quote, 1);
+    });
+}
+
+
+function getBackgroundImage() {
+    if (!IMAGE_KEYS.ACCESS_KEY) {
+        alert("Unspash Access key is out of date");
+        return;
+    }
+
+    let url = 'https://api.unsplash.com/photos/random?featured&orientation=landscape&client_id=' + IMAGE_KEYS.ACCESS_KEY;
+    $.get(url, function (dataJson) {
+        let photo_url = dataJson.urls.raw;
+        let photo_author = dataJson.user.name;
+        let photo_author_url = dataJson.user.links.html;
+
+        // to prevent staggered loading of image from url
+        let img = new Image();
+        img.onload = function () {
+            $('body').css('background-image', `url(${photo_url})`);
+            $('.photoLink').html("Photo by: " + photo_author);
+            $('.photoLink').attr('href', photo_author_url);
+        }
+        img.src = photo_url;
+
+        setCookie("photo_url", photo_url, 1);
+        setCookie("photo_author", photo_author, 1);
+        setCookie("photo_author_url", photo_author_url, 1);
+    });
+}
+
+
+function setCurrentTime() {
     // let is in scope of the brackets
     let now = new Date();
     // 24 hour to 12 hour conversion
     let hours = (now.getHours() % 12) || 12;
     let minutes = (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
-    $('.time').html(hours+":"+minutes);
-    $('.date').html(now.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }));
+    $('.time').html(hours + ":" + minutes);
+    $('.date').html(now.toLocaleDateString('en-US', {
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    }));
 }
 
-function setCookie(cname,cvalue,exdays) {
-    let d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    let expires = "expires=" + d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+
+function setCookie(cookieName, cookieValue, expireHours) {
+    let currentTime = new Date();
+    currentTime.setTime(currentTime.getTime() + expireHours * 3600 * 1000);
+    let expires = "expires=" + currentTime.toUTCString();
+    document.cookie = cookieName + "=" + cookieValue + ";" + expires + ";path=/";
 }
 
-function getCookie(cname) {
-    let name = cname + "=";
+
+function getCookie(cookieName) {
+    let name = cookieName + "=";
     let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
-    for(let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
+    let cookieArray = decodedCookie.split(';');
+    for (let i = 0; i < cookieArray.length; i++) {
+        let cookie = cookieArray[i];
+        while (cookie.charAt(0) == ' ') {
+            cookie = cookie.substring(1);
         }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
+        if (cookie.indexOf(name) == 0) {
+            return cookie.substring(name.length, cookie.length);
         }
     }
     return "";
