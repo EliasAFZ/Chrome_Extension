@@ -18,11 +18,6 @@ body {
     background-position: 50% 50%;
     margin: 0;
     font-family: sans-serif;
-    text-shadow:
-            -1px -1px 0 #000,
-            1px -1px 0 #000,
-            -1px 1px 0 #000,
-            1px 1px 0 #000;
 }
 
 .overlay {
@@ -80,7 +75,7 @@ body {
 
 .quote {
     display: none;
-    font-size: 30px;
+    font-size: 20px;
     font-weight: 300;
     margin: 10px;
     color: #ffffff;
