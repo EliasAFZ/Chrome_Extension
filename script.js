@@ -47,21 +47,21 @@ function returningUser() {
     if (!photo_url || !photo_author || !photo_author_url || !quote || !quote_author) {
         getBackgroundImage();
         setQuote();
-    } else {
-        $(".time").show();
-        $(".top .left ").show();
-        $(".top .right").show();
-
-        $('.photoLink').html("Photo by: " + photo_author);
-        $('.photoLink').attr('href', photo_author_url);
-        $('body').css('background-image', `url(${photo_url})`);
-        $('.quote').css('display', 'inline-block');
-        $('.quote').html("\"" + quote + "\"" + " - " + quote_author);
-
-        $('.greeting').css('display', 'inline-block');
-        $('.user_name').css('display', 'none');
-        $('.greeting').html('Hello there, ' + username + '.');
     }
+
+    $(".time").show();
+    $(".top .left ").show();
+    $(".top .right").show();
+
+    $('.photoLink').html("Photo by: " + photo_author);
+    $('.photoLink').attr('href', photo_author_url);
+    $('body').css('background-image', `url(${photo_url})`);
+    $('.quote').css('display', 'inline-block');
+    $('.quote').html("\"" + quote + "\"" + " - " + quote_author);
+
+    $('.greeting').css('display', 'inline-block');
+    $('.user_name').css('display', 'none');
+    $('.greeting').html('Hello there, ' + username + '.');
 }
 
 // Fade in welcome screen to non-stored users.
@@ -118,7 +118,7 @@ function setQuote() {
         let quote = dataJson.quoteText;
         let quote_author = dataJson.quoteAuthor;
 
-        if(!quote_author){
+        if (!quote_author) {
             quote_author = "Unknown";
         }
 
@@ -136,7 +136,7 @@ function getBackgroundImage() {
     }
 
     let url = 'https://api.unsplash.com/photos/random?featured&orientation=landscape&client_id='
-            + IMAGE_KEYS.ACCESS_KEY;
+        + IMAGE_KEYS.ACCESS_KEY;
     $.get(url, function (dataJson) {
         let photo_url = dataJson.urls.raw;
         let photo_author = dataJson.user.name;
