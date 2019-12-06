@@ -37,23 +37,29 @@ $(document).ready(function () {
 
 // Fade in stored users elements such as quote/background.
 function returningUser() {
+    let username = getCookie("username");
     let photo_url = getCookie("photo_url");
     let photo_author_url = getCookie("photo_author_url");
     let photo_author = getCookie("photo_author");
     let quote = getCookie("quote");
+    let quote_author = getCookie("quote_author");
 
     if (!photo_url || !photo_author || !photo_author_url || !quote) {
         getBackgroundImage();
     } else {
+        $(".time").show();
+        $(".top .left ").show();
+        $(".top .right").show();
+
         $('.photoLink').html("Photo by: " + photo_author);
         $('.photoLink').attr('href', photo_author_url);
         $('body').css('background-image', `url(${photo_url})`);
         $('.quote').css('display', 'inline-block');
-        $('.quote').html(quote);
+        $('.quote').html("\"" + quote + "\"" + " - " + quote_author);
 
         $('.greeting').css('display', 'inline-block');
         $('.user_name').css('display', 'none');
-        $('.greeting').html(`Hello there, <span class="stored-name">username</span>.`);
+        $('.greeting').html('Hello there, ' + username + '.');
     }
 }
 
@@ -110,6 +116,10 @@ function setQuote() {
     $.get(url, function (dataJson) {
         let quote = dataJson.quoteText;
         let quote_author = dataJson.quoteAuthor;
+
+        if(!quote_author){
+            quote_author = "Unknown";
+        }
 
         $('.quote').html("\"" + quote + "\"" + " - " + quote_author);
 
