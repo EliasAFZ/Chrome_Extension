@@ -125,6 +125,7 @@ function setQuote() {
         $('.quote').html("\"" + quote + "\"" + " - " + quote_author);
 
         setCookie("quote", quote, 1);
+        setCookie("quote_author", quote_author, 1);
     });
 }
 
