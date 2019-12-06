@@ -1,46 +1,48 @@
 /*
 Name: Chrome Extension inspired by the Momentum plugin.
 Date: 10/14/2019
-Description:
+Description: Handles all scripting functions for the dashboard
+setting user cookies, handling transitioning elements, and interacting with Web APIs.
 
 @Author Elias Afzalzada
 Copyright © Elias Afzalzada - All Rights Reserved
 */
 
-
+// Main script flow starts here
 $(document).ready(function () {
     let username = getCookie('username');
 
-    //check cookie
+    // Check cookie to determine returning or new user then determine program flow.
     if (username) {
         setTimeElement();
         returningUser();
     } else {
         getBackgroundImage();
         setTimeElement();
-        fadeInWelcomeElements();
+        fadeInNewUserElements();
     }
 
-    // Listen for user enter keypress and set cookie/quote
+    // Listen for user enter keypress and set new user cookie.
     $('.user_name').keypress(function (e) {
         if (e.which == 13) {
             let username = e.target.value;
             if (!username) return;
             fadeInUserElements(username);
             setQuote();
-            //TODO: set later expire time
-            setCookie('username', username, 0);
+            // 4380 expire is 6 months (1 month = 730 hours)
+            setCookie('username', username, 4380);
         }
     });
 });
 
+// Fade in stored users elements such as quote/background.
 function returningUser() {
     let photo_url = getCookie("photo_url");
     let photo_author_url = getCookie("photo_author_url");
     let photo_author = getCookie("photo_author");
     let quote = getCookie("quote");
 
-    if (!photo_url || !photo_author || !photo_author_url) {
+    if (!photo_url || !photo_author || !photo_author_url || !quote) {
         getBackgroundImage();
     } else {
         $('.photoLink').html("Photo by: " + photo_author);
@@ -55,7 +57,8 @@ function returningUser() {
     }
 }
 
-function fadeInWelcomeElements() {
+// Fade in welcome screen to non-stored users.
+function fadeInNewUserElements() {
     let fadeInTime = 2000;
 
     setTimeElement();
@@ -70,7 +73,7 @@ function fadeInWelcomeElements() {
     });
 }
 
-
+// Fade in new users elements and quote/background.
 function fadeInUserElements(username) {
     let fadeInTime = 1000;
     let fadeOutTime = 500;
@@ -89,7 +92,7 @@ function fadeInUserElements(username) {
     });
 }
 
-
+// Set time for clock element.
 function setTimeElement() {
     //current time
     setCurrentTime();
@@ -99,6 +102,7 @@ function setTimeElement() {
     }, 10 * 1000);
 }
 
+// Grab quote from forimsatic api and set html element.
 function setQuote() {
     // proxy to get around cors bug?
     let proxy = 'https://cors-anywhere.herokuapp.com/';
@@ -113,14 +117,15 @@ function setQuote() {
     });
 }
 
-
+// Grabs featured background image from Unsplash api and sets background.
 function getBackgroundImage() {
     if (!IMAGE_KEYS.ACCESS_KEY) {
         alert("Unspash Access key is out of date");
         return;
     }
 
-    let url = 'https://api.unsplash.com/photos/random?featured&orientation=landscape&client_id=' + IMAGE_KEYS.ACCESS_KEY;
+    let url = 'https://api.unsplash.com/photos/random?featured&orientation=landscape&client_id='
+            + IMAGE_KEYS.ACCESS_KEY;
     $.get(url, function (dataJson) {
         let photo_url = dataJson.urls.raw;
         let photo_author = dataJson.user.name;
@@ -132,7 +137,7 @@ function getBackgroundImage() {
             $('body').css('background-image', `url(${photo_url})`);
             $('.photoLink').html("Photo by: " + photo_author);
             $('.photoLink').attr('href', photo_author_url);
-        }
+        };
         img.src = photo_url;
 
         setCookie("photo_url", photo_url, 1);
@@ -141,7 +146,7 @@ function getBackgroundImage() {
     });
 }
 
-
+// Gets and Sets current time.
 function setCurrentTime() {
     // let is in scope of the brackets
     let now = new Date();
@@ -157,7 +162,7 @@ function setCurrentTime() {
     }));
 }
 
-
+// Sets cookies for whatever needing to be stored.
 function setCookie(cookieName, cookieValue, expireHours) {
     let currentTime = new Date();
     currentTime.setTime(currentTime.getTime() + expireHours * 3600 * 1000);
@@ -165,7 +170,7 @@ function setCookie(cookieName, cookieValue, expireHours) {
     document.cookie = cookieName + "=" + cookieValue + ";" + expires + ";path=/";
 }
 
-
+// Retrieves stored cookies
 function getCookie(cookieName) {
     let name = cookieName + "=";
     let decodedCookie = decodeURIComponent(document.cookie);
