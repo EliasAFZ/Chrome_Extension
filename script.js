@@ -44,8 +44,9 @@ function returningUser() {
     let quote = getCookie("quote");
     let quote_author = getCookie("quote_author");
 
-    if (!photo_url || !photo_author || !photo_author_url || !quote) {
+    if (!photo_url || !photo_author || !photo_author_url || !quote || !quote_author) {
         getBackgroundImage();
+        setQuote();
     } else {
         $(".time").show();
         $(".top .left ").show();
