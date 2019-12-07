@@ -1,5 +1,5 @@
 # Chrome_Extension
-This plug in was inspired by the current chrome plug in [Momentum](https://chrome.google.com/webstore/detail/momentum/laookkfknpbbblfpciffpaejjkokdgca?hl=en) I wanted to expore web dev a bit and take a crack at making a smaller version of it on my own. Currently it stores users that enter a name in a cookie along with a quote and background just for them (quote/background image expire after an hour and new ones are retrieved).
+This plug in was inspired by the current chrome plug in [Momentum](https://chrome.google.com/webstore/detail/momentum/laookkfknpbbblfpciffpaejjkokdgca?hl=en) I wanted to chrome plug development and take a crack at making a smaller version of it on my own. Currently it stores users that enter a name in a cookie along with a quote and background just for them (quote/background image expire after an hour and new ones are retrieved).
 
 # Built With
 * [jQuery](https://jquery.com/)
